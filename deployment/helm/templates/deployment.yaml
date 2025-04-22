@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: "{{ .Chart.Name }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}"
+{{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+{{- end }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecrets }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        env:
+          - name: CONFIGMAP_NAME
+            value: "{{ .Chart.Name }}"
+          - name: CONFIGMAP_NAMESPACE
+            value: "{{ .Release.Namespace }}"
+          - name: PORT
+            value: "{{ .Values.server.http.port }}"
+        ports:
+        - name: http
+          containerPort: {{ .Values.server.http.port }}
+        readinessProbe:
+          httpGet:
+            path: /isAlive
+            port: {{ .Values.server.http.port }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 2
+          failureThreshold: 2
+          timeoutSeconds: 5
