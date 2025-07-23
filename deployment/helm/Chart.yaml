@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: v1.0.0
 description: configuration-service deployment
 name: configuration-service
-version: 1.0.0
+version: 1.0.1
 dependencies:
   - name: library
     version: 1.1.1
