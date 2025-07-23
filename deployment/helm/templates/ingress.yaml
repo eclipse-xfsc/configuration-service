@@ -9,6 +9,7 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 spec:
+  ingressClassName: nginx
   tls:
   {{- range .Values.ingress.tls }}
     - hosts:
