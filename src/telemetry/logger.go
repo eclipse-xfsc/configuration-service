@@ -1,4 +1,4 @@
-package main
+package telemetry
 
 import (
 	"time"
@@ -7,7 +7,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// Logger is the global application logger
 var Logger *zap.SugaredLogger
+
+// InitializeLogger sets up the global logger with production config
 func InitializeLogger() {
 	config := zap.NewProductionConfig()
 	config.EncoderConfig.TimeKey = "timestamp"

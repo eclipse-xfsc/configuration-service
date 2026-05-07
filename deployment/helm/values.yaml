@@ -15,23 +15,26 @@ image:
   # -- Image pull secret when internal image is used
   pullSecrets: key
 
-podAnnotations: {}
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/metrics"
+  prometheus.io/port: "8080"
 
 serviceAccountName: configuration-service
 
-# ingress:
-#   enabled: false
-#   annotations:
-#     kubernetes.io/ingress.class: nginx
-#   hosts:
-#     - host: ChangeMe
-#       paths:
-#         - path: /
-#           port: 8080
-#   tls:
-  #  - secretName: cert-manager-tls
-  #    hosts:
-  #      - test.example.io
+ingress:
+  enabled: false
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: configuration-service.example.io
+      paths:
+        - path: /
+          port: 8080
+  tls:
+    - secretName: configuration-service-tls
+      hosts:
+        - configuration-service.example.io
 
 
 resources:

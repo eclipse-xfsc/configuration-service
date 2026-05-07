@@ -1,0 +1,8 @@
+node_modules
+.env
+.DS_Store
+.idea
+.vscode/settings.json
+
+# AI Context Check Files
+.ai/context-sync.json

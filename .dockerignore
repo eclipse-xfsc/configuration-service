@@ -1,0 +1,12 @@
+.git
+.gitignore
+.github
+.ai
+node_modules
+*.md
+!README.md
+deployment
+local
+data
+docks
+init-db

@@ -2,19 +2,33 @@ package main
 
 import (
 	"os"
+
+	"github.com/eclipse-xfsc/configuration-service/src/config"
+	"github.com/eclipse-xfsc/configuration-service/src/kubernetes"
+	"github.com/eclipse-xfsc/configuration-service/src/routes"
+	"github.com/eclipse-xfsc/configuration-service/src/telemetry"
 )
 
-func main() {
-	// Init Logger
-	InitializeLogger()
+func init() {
+	// Set up test injection functions
+	routes.ConfigLoadFn = func() (string, string, error) {
+		cfg, err := config.Load()
+		return cfg.ConfigmapName, cfg.ConfigmapNamespace, err
+	}
+	routes.ConfigMapFn = kubernetes.GetConfigmap
+}
 
-	// Get config
-	config, err := getConfig()
+func main() {
+	// Initialize logger
+	telemetry.InitializeLogger()
+
+	// Load configuration
+	cfg, err := config.Load()
 	if err != nil {
-		Logger.Error(err)
-		os.Exit(0)
+		telemetry.Logger.Error(err)
+		os.Exit(1)
 	}
 
-	// Start Rest API server
-    startServer(&config.port)
+	// Start REST API server
+	routes.Start(cfg.Port)
 }

@@ -1,4 +1,4 @@
-package main
+package kubernetes
 
 import (
 	"context"
@@ -8,7 +8,8 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func k8sGetConfigmap(name string, namespace string) (map[string]string, error) {
+// GetConfigmap retrieves a ConfigMap from the Kubernetes cluster
+func GetConfigmap(name string, namespace string) (map[string]string, error) {
 	emptyConfigmap := make(map[string]string)
 
 	config, err := rest.InClusterConfig()
