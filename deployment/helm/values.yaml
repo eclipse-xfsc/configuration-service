@@ -52,5 +52,3 @@ server:
     port: 8080
 
 data:
-  exampleKey: exampleValue
-  exampleKey1: exampleValue1

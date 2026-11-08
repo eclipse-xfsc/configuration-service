@@ -4,9 +4,9 @@ go 1.25.0
 
 require (
 	github.com/gorilla/mux v1.8.1
-	go.uber.org/zap v1.27.0
-	k8s.io/apimachinery v0.35.2
-	k8s.io/client-go v0.35.2
+	go.uber.org/zap v1.27.1
+	k8s.io/apimachinery v0.34.2
+	k8s.io/client-go v0.34.2
 )
 
 require (
